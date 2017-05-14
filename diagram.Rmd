@@ -1,0 +1,34 @@
+---
+title: "diagram"
+author: "Arthur Ryman"
+date: '2017-03-08'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+R <- 3
+R
+```
+
+## Some diagram
+
+```{r,engine='tikz',fig.ext='pdf',fig.width=3}
+\begin{tikzpicture}
+ \draw (0,0) circle (2cm);
+ \draw (0,0) circle (3cm);
+\end{tikzpicture}
+```
+
+```{r bunch_o_figs, fig.height=4, fig.width=8}
+n <- 100
+x <- rnorm(n)
+par(mfrow=c(1,2), las=1)
+for(i in 1:8) {
+  y <- i*x + rnorm(n)
+  plot(x, y, main=i)
+}
+```

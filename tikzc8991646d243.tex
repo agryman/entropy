@@ -1,0 +1,26 @@
+\documentclass{article}
+\include{preview}
+\usepackage[pdftex,active,tightpage]{preview}
+\usepackage{amsmath}
+\usepackage{tikz}
+\usetikzlibrary{matrix}
+\begin{document}
+\begin{preview}
+%% TIKZ_CODE %%
+\begin{tikzpicture}
+
+\draw[step=.5cm,help lines] (-1.4,-1.4) grid (1.4,1.4)
+
+% draw the x-y axes
+\draw[->] (-1.5,0) -- (1.5,0) node[anchor=west] {$x$};
+\draw[->] (0,-1.5) -- (0,1.5) node[anchor=south] {$y$};
+
+% draw the unit circle
+\draw (0,0) circle (1);
+
+% theta1 = 30 degrees, x1 = 0.866, y1 = 0.500
+% theta2 = 35 degrees, x2 = 0.819, y2 = 0.574
+
+\end{tikzpicture}
+\end{preview}
+\end{document}

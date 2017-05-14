@@ -1,0 +1,102 @@
+Problem: How to Create Illustrations for Mathematical Documents
+2017-03-12
+
+I am writing some math notes.
+I’ve decided to do these in R Studio so that I can do some numerical experiments
+to illustrate the concepts and visualize the resulting objects.
+I can easily generate nice plots using R.
+
+I also want to include line drawings to illustrate the geometry involved.
+For example, show the mapping of a sphere to the plane.
+
+I’ve been using R markdown which is nice because the output can be HTML.
+I could also use knitr with LaTeX. 
+Note that the thing I am really using is knitr which is an R package.
+knitr supports several formats that let you combine R code with documentation,
+and pull in the results of running the R code into the documentation.
+The easiest format is called R markdown and its source files use the extension “.Rmd”.
+R markdown can be rendered as LaTeX, HTML, etc.
+
+In R markdown R code chunks and inline code as entered using:
+```{r}
+…
+```
+and `r …`
+
+The nice thing about R markdown is that you can apparently do any kind of LaTeX math formatting even
+if the output format is HTML.
+I believe that MathJAX is a very complete implementation of LaTeX that lets you render math nicely 
+in a Web browser using Javascript.
+This means that with R markdown you can generate both HTML and LaTeX that look identical.
+
+If the documentation is a complex LaTeX document, e.g. maybe including Z Notation, then
+there may not be any advantage to viewing it as HTML in a web browser.
+So there is no point in this case to converting it to R markdown.
+Instead, change its file extension to be “.Rnw” (no web).
+Now you can imbed R code chunks and inline R code using a different syntax.
+<<>>=
+…
+@
+and
+\Sexpr{…}
+
+ShareLaTeX supports knitr too.
+It uses the file extension “*.Rtex” which is more consistent than using “*.Rnw”.
+
+
+Finally, you can write HTML.
+The file extension is “*.Rhtml”.
+
+So what is the best way to include a figure in the document?
+It would be great if the figure was dynamic like the plots in the sense that
+I could define variables in R and then use their values in the figure, e.g. to
+compute the position of a point.
+
+I have found out that the tikZ package can do a lot of dynamic math calculations.
+This reduces the problem to how do I pass computed values from the R session into the tikZ session?
+It should be possible to pass values to TeX variables and then use them in tikZ.
+I need to verify this.
+
+
+Here are some ways to create diagrams:
+1. Draw it on paper, scan the paper to PDF or PNG, crop the desired region, and include it as an image. 
+2. Draw it freehand on my iPad Pro using my Apple Pencil, crop the result, and include it as an image.
+3. Use a vector graphic drawing program such as Adobe Illustrator and insert the PDF or PNG as an image.
+4. Use the R graphics packages such as ggplot2 and annotation them. This is promising but is it a force fit? Can I create whatever I want? The advantage is that it’s nicely integrated with R and can use R variables.
+5. Use tikz in a LaTeX. How do I pull in R variables?
+6. Use the tikz engine in an R chunk. This works in HTML output. How do I pull in R variables?
+
+I found some YouTube tutorials about tikz and ShareLatex. 
+One of them talked about how to create math diagrams in GeoGebra and export them as tikz.
+I will try that.
+
+GeoGebra seems to be good for creating educational material.
+It does not seem easy to use for creating diagrams that have precisely controlled
+features such a mathematical notation in labels.
+
+ShareLatex also integrates knitr and tikz.
+Read the online documentation in ShareLatex.
+
+GeoGebra may not be a good choice if it can’t use math formulas in labels.
+Try tikz and just do static diagrams - these are the illustrations, not driven by data.
+
+tikZ certainly seems very powerful.
+I am sure you could create any kind of diagram using it.
+It takes a lot of ideas from PostScript.
+There is a 700+ page user manual.
+The syntax is very non-uniform and idiosyncratic.
+However, once you learn it you would probably be very powerful.
+I’ll invest more time reading.
+Still I would like to see how to pass in R values into tikz.
+One klugy way would be to write TeX definitions into a file, e.g. values.tex, using R and then
+read that file into the tikZ code using \input{values.tex}.
+
+The following might be possible:
+
+```{r}
+A <- 3
+```
+
+$$
+\def\A{\Sexpr{A}}
+$$

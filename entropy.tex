@@ -1,0 +1,176 @@
+\documentclass[11pt]{amsart}
+\usepackage{geometry}                % See geometry.pdf to learn the layout options. There are lots.
+\geometry{letterpaper}                   % ... or a4paper or a5paper or ... 
+%\geometry{landscape}                % Activate for for rotated page geometry
+%\usepackage[parfill]{parskip}    % Activate to begin paragraphs with an empty line rather than an indent
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{epstopdf}
+\usepackage{dirtytalk}
+\usepackage{fuzz}
+
+\DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
+
+\title{Notes on Entropy}
+\author{Arthur Ryman}
+\date{\today}                                           % Activate to display a given date or no date
+
+\begin{document}
+
+\begin{abstract}
+The concept of entropy crops up in many seemingly unrelated areas, ranging from physics to information theory to
+machine learning.
+This article summarizes the mathematical foundations of entropy, providing precise definitions and proofs.
+\end{abstract}
+
+\maketitle
+
+\section{Introduction}
+
+Carnot discovered the concept of entropy while analyzing the maximum theoretical efficiency of heat engines.
+Boltzman gave entropy a statistical definition in terms of the number of microscopic states available to a macroscopic state.
+Shannon showed how entropy was relevant to the rate at which information could be transmitted over a communications channel.
+Bekenstein proposed that black holes have entropy and Hawking defined their temperature and predicted that they would radiate.
+And today, machine learning algorithms regularly use the concepts of entropy and information gain to analyze large datasets.
+
+This is certainly a fascinating and important circle of ideas!
+Unfortunately, it is difficult to find clear explanations of these concepts.
+Typical textbooks on thermodynamics do not lay out the material using precise mathematical language.
+My goal in this article is to collect together all the related definitions and give them a precise mathematical treatment.
+
+The target audience for this article is me since I am personally dissatisfied with my grasp of the subject.
+However, if I manage to explain this material clearly and simply enough, then it may be of interest to the machine learning community.
+
+\section{Microscopic and Macroscopic States}
+
+When Carnot discovered entropy, the atomic theory of matter was not widely accepted as fact by the scientific community.
+Carnot analyzed heat engines using their macroscopic properties, such as temperature, volume, and pressure.
+When the atomic theory was being developed, physicists sought to derive the macroscopic properties of matter from 
+the statistical properties of their microscopic constituents.
+This approach was called {\it statistical mechanics} or, more generally, {\it statistical physics}.
+In fact, the success of statistical mechanics in explaining thermodynamics was viewed as strong supporting evidence for the 
+validity of the atomic theory of matter.
+
+\subsection{Boltzman Entropy}
+
+Although the thermodynamic definition of entropy came first,
+I am going to start with the statistical definition since it explains the thermodynamic definition and 
+it applies more directly to machine learning.
+
+The concept of entropy arises when the we forget information about the states of a system.
+Consider a system and let $A$ be the set of states that the system can be in.
+For example, consider a classical system that consists of $N$ identical point particles each mass $m$ moving in a box of fixed volume 
+that has perfectly reflecting walls.
+The state of this system is determined by the position and momentum of each particle.
+We refer to $A$ as the set of {\it microscopic states} of the system or, more briefly, its {\it microstates}.
+
+Suppose further that $B$ is a related set of more coarse-grained states referred to as the {\it macroscopic states} or {\it macrostates}.
+Every macrostate corresponds to one or more microstates.
+Continuing with the example of particles in a box, the macrostate might be defined simply by the system's temperature.
+
+Let the correspondence between the microstates and macrostates be given by a {\it forgetful} mapping $f$ of $A$ onto $B$:
+\begin{equation}
+	f: A \fun B
+\end{equation}
+For particles in a box, the temperature is their average kinetic energy
+
+The Boltzman definition of entropy applies directly to the case where for each macrostate $b$ there is a finite number $\Omega_f(b)$ of microstates
+that map to $b$ under $f$:
+\begin{equation}
+	\Omega_f : B \fun \nat_1
+\end{equation}
+where
+\begin{equation}
+	 \Omega_f(b) = \# \{~ a: A | f(a) = b ~\} 
+\end{equation}
+In this case the entropy $S_f(b)$ of the macrostate $b$ is defined to be:
+\begin{equation}
+	S_f : B \fun \mathbb{R}
+\end{equation}
+where
+\begin{equation}
+	S_f(b) = k \ln \Omega_f(b)
+\end{equation}
+
+In the system of particles in a box there are an infinite number of microstates for each macrostates so we'll need to adapt Boltzman's definition of entropy a little.
+Before doing that, let's examine the situation for finite system.
+
+\subsection{The Entropy of Finite Systems}
+
+Consider a particle that can exist in one of some finite number $d$ of states.
+Let $\Phi$ denote the set these single-particle states:
+\begin{equation}
+	\# \Phi = d
+\end{equation}
+
+Let $\phi_1, \ldots, \phi_d$ denote the $d$ states in $\Phi$:
+\begin{equation}
+	\Phi = \{ \phi_1, \ldots, \phi_d \}
+\end{equation}
+
+
+Now consider a system of $N$ of these particles.
+Each microstate of this system is given by an ordered $N$-tuple of single-particle states:
+\begin{equation}
+	A = \Phi^N
+\end{equation}
+
+Recall the definition of the Kronecker $\delta$-function:
+\begin{equation}
+	\delta(x,y) = 
+		\left\{
+			\begin{array}{ll}
+			1	&	\mbox{if $x = y$} \\
+			0	&	\mbox{if $x \neq y$}
+			\end{array}
+		 \right.
+\end{equation}
+
+Given an $N$-particle microstate $a = (a_1, \ldots, a_N)$  and a single-particle state $\phi \in \Phi$ let $n(a, \phi)$ be the number of particles in
+$a$ that are in the single-particle state $\phi$:
+\begin{equation}
+	n : A  \cross \Phi \fun \nat
+\end{equation}
+where
+\begin{equation}
+	n(a, \phi) = \sum_{i=1}^N \delta(a_i, \phi)
+\end{equation}
+The number of particles in a single-particle state is referred to as the {\it occupancy number} of that state.
+Note that for any multi-particle state $a$ we have:
+\begin{equation}
+	\sum_{j=1}^d n(a, \phi_j) = N
+\end{equation}
+
+Define the macrostates of the system to be the set of all possible $N$-particle occupancy number assignments $b$ on $\Phi$:
+\begin{equation}
+	B = \{~ b: \Phi \fun \nat | \sum_{j=1}^d b(\phi_j) = N ~\}
+\end{equation}
+
+The forgetful mapping $f : A \fun B$ sends an $N$-particle state to its occupancy numbers on $\Phi$:
+\begin{equation}
+	f(a)(\phi) = n(a, \phi)
+\end{equation}
+
+TO DO: Compute the entropy of a state b in B. Use Stirling's formula to approximate it. Show how Shannon's entropy emerges.
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+%\subsection{}
+
+
+
+\end{document}  

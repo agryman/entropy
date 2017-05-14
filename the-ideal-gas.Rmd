@@ -1,0 +1,73 @@
+---
+title: "The Ideal Gas"
+author: "Arthur Ryman"
+date: '2017-03-11'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Single Particle
+
+Consider a point particle of mass $m$ confined to a cubic box of length $L$.
+The configuration space $Q$ for this particle is:
+$$
+Q = [0,L]^3
+$$ 
+
+The phase space $\Phi$ for this particle is:
+$$
+\Phi = Q \times \mathbb{R}^3
+$$
+A point $(q,p) \in \Phi$ is a position-momentum pair where the momentum $p$ is 
+related to the velocity $v$ by:
+$$
+p = m v
+$$
+Assume that the walls of the box are perfectly reflecting so that, as the particle
+bounces around in it, none of the kinetic energy of the particle is transferred as
+heat into the walls.
+The kinetic energy $E$ of the particle is therefore a constant of the motion.
+It is given by:
+$$
+E = \frac{1}{2}mv^2 \\
+= \frac{1}{2}m(\frac{p}{m})^2 \\
+= \frac{p^2}{2m}
+$$
+
+Observe that the trajectory of the particle in momentum space lies on a 2-dimensional 
+sphere of radius $R = \sqrt{2mE}$.
+
+# $N$ Particles
+
+An ideal gas consists of a large number $N$ of these particles.
+The phase space is therefore $\Phi^N$.
+As these particles move around the box they collide with eachother and the walls.
+Assume that these collisions are perfectly elastic so again the total energy $E$
+is conserved and is equal to:
+$$
+E = \frac{1}{2m} \sum_{i=1}^N p_i^2
+$$
+Observe that the trajectory in momentum space lies on a $3N-1$-dimensional sphere
+of radius $R = \sqrt{2mE}$.
+
+The motion of all the particles defines a trajectory in $\Phi^N$ which in principle
+can be calculated exactly by taking some given set of initial positions and momenta
+and evolving them forward in time using Newton's laws of motion.
+However, in practice it is impossible to measure the initial conditions with enough
+precision to accurately predict the distant future.
+Therefore, for practical purposes, the trajectory in $\Phi^N$ looks like a random walk.
+Furthermore, each particle has no bias for any particlar position or momentum so the 
+trajectory in phase space is equally likely to end up anywhere that is allowed by the
+conservation of energy.
+We are therefore led to the conclusion that if we allow sufficient time to pass
+then the gas will have spread out evenly throughout the volume of the box
+and the momenta of the particles are equally likely to be found anywhere on the
+energy sphere.
+
+From the point of view of probability, the momenta of the particles will be
+distributed uniformly on the energy sphere.
+We can therefore determine the distribution of momentum of a single particle
+by regarding it as a random variable on the energy sphere.
